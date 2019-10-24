@@ -29,4 +29,12 @@ public class Automata {
     return null;
   }
 
+  //for debugging purposes
+  @Override
+  public String toString() {
+    return "Automata{" +
+    "states=" + states +
+    ", transitions=" + transitions +
+    '}';
+  }
 }
