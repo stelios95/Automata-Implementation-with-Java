@@ -13,7 +13,6 @@ public class Main {
       br = new BufferedReader(new FileReader(file));
       String st;
       while ((st = br.readLine()) != null){
-        //System.out.println(st);
         fileContent.add(st);
       }
     } catch (FileNotFoundException e) {
@@ -24,10 +23,9 @@ public class Main {
       return;
     }
     if(fileContent.isEmpty()) return;
-    FileParser parser = new FileParser(fileContent);
+    AutomataParser parser = new AutomataParser(fileContent);
     //create automata
     Automata automata = parser.createAutomata();
-    //System.out.println(automata.toString());
     boolean shouldReturn = false;
     do{
       System.out.println("Please enter a word to check if it's accepted from the automata!");
@@ -51,14 +49,7 @@ public class Main {
           System.out.println("Please select 'y' if you want to enter another word or 'n' if you wish to close the program!");
         }
       } while (!rightInput);
-
     } while (!shouldReturn);
-
-
-
-    //prompt user to enter a world
-
   }
-
 }
 

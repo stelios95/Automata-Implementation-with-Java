@@ -2,9 +2,9 @@ import com.sun.source.doctree.SeeTree;
 
 import java.util.*;
 
-public class FileParser {
+public class AutomataParser {
   private ArrayList<String> doc;
-  public FileParser(ArrayList<String> doc){
+  public AutomataParser(ArrayList<String> doc){
     this.doc = doc;
   }
 
@@ -55,6 +55,16 @@ public class FileParser {
     private boolean isInitial;
     private boolean isFinal;
     private int stateId;
+    //getters
+    public boolean isInitial() {
+      return isInitial;
+    }
+    public boolean isFinal() {
+      return isFinal;
+    }
+    public int getStateId() {
+      return stateId;
+    }
 
     public State(boolean isInitial, boolean isFinal, int stateId){
       this.isInitial = isInitial;
@@ -77,6 +87,19 @@ public class FileParser {
     private String transitionChar;
     private int nextStateId;
     private boolean isEpsilon;
+    //getters
+    public int getCurrentStateId() {
+      return currentStateId;
+    }
+    public String getTransitionChar() {
+      return transitionChar;
+    }
+    public int getNextStateId() {
+      return nextStateId;
+    }
+    public boolean isEpsilon() {
+      return isEpsilon;
+    }
 
     public Transition(int currentStateId, String transitionChar, int nextStateId, boolean isEpsilon){
       this.currentStateId = currentStateId;
