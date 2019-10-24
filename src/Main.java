@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class Main {
@@ -12,7 +13,7 @@ public class Main {
       br = new BufferedReader(new FileReader(file));
       String st;
       while ((st = br.readLine()) != null){
-        System.out.println(st);
+        //System.out.println(st);
         fileContent.add(st);
       }
     } catch (FileNotFoundException e) {
@@ -26,11 +27,36 @@ public class Main {
     FileParser parser = new FileParser(fileContent);
     //create automata
     Automata automata = parser.createAutomata();
-    System.out.println(automata.toString());
+    //System.out.println(automata.toString());
+    boolean shouldReturn = false;
+    do{
+      System.out.println("Please enter a word to check if it's accepted from the automata!");
+      Scanner scanner = new Scanner(System.in);
+      String word = scanner.nextLine();
+      boolean isValid = automata.isValid(word);
+      if(isValid){
+        System.out.println("The word is valid!!");
+      } else {
+        System.out.println("The word is NOT valid!!");
+      }
+      boolean rightInput = false;
+      do{
+        System.out.println("Do you want to enter a new word?(Y (yes) /N (no) )");
+        String yesOrNo = scanner.nextLine();
+        if(yesOrNo.equalsIgnoreCase("y")){
+          rightInput = true;
+        } else if (yesOrNo.equalsIgnoreCase("n")){
+          return;
+        } else {
+          System.out.println("Please select 'y' if you want to enter another word or 'n' if you wish to close the program!");
+        }
+      } while (!rightInput);
 
-    //create automata
+    } while (!shouldReturn);
+
+
+
     //prompt user to enter a world
-    //return if the world isValid
 
   }
 
