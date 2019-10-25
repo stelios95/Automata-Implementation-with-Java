@@ -42,11 +42,18 @@ public class AutomataParser {
   public ArrayList<Transition> createTransitions(){
     ArrayList<Transition> transitions = new ArrayList<>();
     for(int i = 3; i < doc.size(); i++){
-      List<String> transitionElements = Arrays.asList(doc.get(i).split(" "));
-      transitions.add(new Transition(Integer.parseInt(transitionElements.get(0)),
-                                      transitionElements.get(1),
-                                      Integer.parseInt(transitionElements.get(2)),
-                                      (transitionElements.get(1).equals("*") ? true : false)));
+      List<String> transitionInfo = Arrays.asList(doc.get(i).split(" "));
+      if(transitionInfo.size() < 3){
+        transitions.add(new Transition(Integer.parseInt(transitionInfo.get(0)),
+                          null,
+                                        Integer.parseInt(transitionInfo.get(1)),
+                              true));
+      } else if(transitionInfo.size() == 3){
+        transitions.add(new Transition(Integer.parseInt(transitionInfo.get(0)),
+                                        transitionInfo.get(1),
+                                        Integer.parseInt(transitionInfo.get(2)),
+                                false));
+      }
     }
     return transitions;
   }
