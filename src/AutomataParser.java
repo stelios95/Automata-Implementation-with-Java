@@ -1,39 +1,45 @@
-import com.sun.source.doctree.SeeTree;
-
 import java.util.*;
 
 public class AutomataParser {
   private ArrayList<String> doc;
+  private ArrayList<State> states;
+  private ArrayList<Transition> transitions;
   public AutomataParser(ArrayList<String> doc){
     this.doc = doc;
+    this.states = createStates();
+    this.transitions = createTransitions();
   }
 
-  public Automata createAutomata(){
-    ArrayList<State> states = createStates();
-    ArrayList<Transition> transitions = createTransitions();
-    Automata automata = new Automata(states, transitions);
-    return automata;
+  public Automaton createAutomaton(){
+    Automaton automaton = new Automaton(this.states, this.transitions);
+    return automaton;
   }
 
   public ArrayList<State> createStates(){
     ArrayList<State> states = new ArrayList<>();
+    HashSet<Integer> allStateIds = new HashSet<>();
+    HashSet<Integer> restStates = new HashSet<>();
     int totalStates = Integer.parseInt(doc.get(0));
-    Set<Integer> allStates = new HashSet<>();
-    Set<Integer> createdStates = new HashSet<>();
-    for(int i = 1; i < totalStates; i++){
-      allStates.add(i);
+    for(int i = 1; i < totalStates +1; i++){
+      allStateIds.add(i);
     }
-    int initialStateId = Integer.parseInt(doc.get(1));
-    states.add(new State(true, false, initialStateId));
-    createdStates.add(initialStateId);
-    List<String> finalStateIds = Arrays.asList(doc.get(2).split(" "));
-    for(String s : finalStateIds){
-      int id = Integer.parseInt(s);
-      states.add(new State(false, true, id));
-      createdStates.add(id);
+    int inititalStateId = Integer.parseInt(doc.get(1));
+    restStates.add(inititalStateId);
+    states.add(new State(true, false, inititalStateId));
+    String[] tempIds = doc.get(2).split(" ");
+    ArrayList<String> finalStatesIds = new ArrayList<>();
+    finalStatesIds.addAll(Arrays.asList(tempIds));
+    if(finalStatesIds.contains(Integer.toString(inititalStateId))){
+      states.get(0).setFinal(true);
+      finalStatesIds.remove(Integer.toString(inititalStateId));
     }
-    allStates.removeAll(createdStates);
-    for(Integer i : allStates){
+    for(String s : finalStatesIds){
+      states.add(new State(false,true, Integer.parseInt(s)));
+      restStates.add(Integer.parseInt(s));
+    }
+    //allStateIds now contains all the states that are neither initial nor final
+    allStateIds.removeAll(restStates);
+    for(Integer i : allStateIds){
       states.add(new State(false, false, i));
     }
     return states;
@@ -71,6 +77,10 @@ public class AutomataParser {
     }
     public int getStateId() {
       return stateId;
+    }
+
+    public void setFinal(boolean aFinal) {
+      isFinal = aFinal;
     }
 
     public State(boolean isInitial, boolean isFinal, int stateId){

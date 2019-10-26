@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Automata {
+public class Automaton {
   private List<AutomataParser.State> states;
   private AutomataParser.State initialState;
   private List<AutomataParser.State> currentStates = new ArrayList<>();
@@ -19,8 +19,8 @@ public class Automata {
     '}';
   }
 
-  public Automata(List<AutomataParser.State> states,
-                  List<AutomataParser.Transition> transitons){
+  public Automaton(List<AutomataParser.State> states,
+                   List<AutomataParser.Transition> transitons){
     this.states = states;
     this.transitions = transitons;
     extractInitialState();
@@ -32,16 +32,7 @@ public class Automata {
   public boolean isValid(String word){
     List<String> characters = getCharacters(word);
     for(String s : characters){
-      List<AutomataParser.State> nextStates = new ArrayList<>();
-      for(AutomataParser.State state : this.currentStates ){
-        List<AutomataParser.Transition> transitions = transitionsByState.get(state);
-        for(AutomataParser.Transition transition : transitions){
-          if(transition.getTransitionChar().equals(s)){
-            AutomataParser.State nxtState = statesById.get(transition.getNextStateId());
-            nextStates.add(nxtState);
-          }
-        }
-      }
+      List<AutomataParser.State> nextStates = getNextStates(s, this.currentStates);
       if(nextStates.isEmpty()){
         return false;
       }
@@ -82,5 +73,25 @@ public class Automata {
     for(AutomataParser.State state : this.states){
       this.statesById.put(state.getStateId(), state);
     }
+  }
+
+  public List<AutomataParser.State> getNextStates(String currentCharacter, List<AutomataParser.State> currentStates){
+    //get all available transitions for all current states and filter them by transition character
+    List<AutomataParser.State> nextStates = new ArrayList<>();
+    List<AutomataParser.Transition> allTransitions = new ArrayList<>();
+    List<AutomataParser.Transition> stateTransitions = new ArrayList<>();
+    for(AutomataParser.State state : currentStates){
+      stateTransitions = transitionsByState.get(state);
+      //System.out.println("ALL TRANSITIONS: " + stateTransitions.toString());
+      allTransitions.addAll(stateTransitions);
+    }
+    //filter next transitions by the current character
+    for(AutomataParser.Transition t : allTransitions){
+      if(t.getTransitionChar().equals(currentCharacter)){
+        nextStates.add(statesById.get(t.getNextStateId()));
+      }
+    }
+    //System.out.println("NEXT STATES : " + nextStates.toString());
+    return nextStates;
   }
 }

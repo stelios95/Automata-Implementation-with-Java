@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Main {
   public static void main(String[] args) {
     //parse file
-    File file = new File("Automata.txt");
+    File file = new File("NDAutomata.txt");
     BufferedReader br = null;
     ArrayList<String> fileContent = new ArrayList<String>();
     try {
@@ -24,16 +24,15 @@ public class Main {
     }
     if(fileContent.isEmpty()) return;
     AutomataParser parser = new AutomataParser(fileContent);
-    //create automata
-    Automata automata = parser.createAutomata();
-
-    System.out.println(automata.toString());
     boolean shouldReturn = false;
     do{
-      System.out.println("Please enter a word to check if it's accepted from the automata!");
+      //create automata
+      Automaton automaton = parser.createAutomaton();
+      //System.out.println(automaton.toString());
+      System.out.println("Please enter a word to check if it's accepted from the automaton!");
       Scanner scanner = new Scanner(System.in);
       String word = scanner.nextLine();
-      boolean isValid = automata.isValid(word);
+      boolean isValid = automaton.isValid(word);
       if(isValid){
         System.out.println("The word is valid!!");
       } else {
