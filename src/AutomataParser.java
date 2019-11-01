@@ -49,11 +49,13 @@ public class AutomataParser {
     ArrayList<Transition> transitions = new ArrayList<>();
     for(int i = 3; i < doc.size(); i++){
       List<String> transitionInfo = Arrays.asList(doc.get(i).split(" "));
+      //it's an e-transition
       if(transitionInfo.size() < 3){
         transitions.add(new Transition(Integer.parseInt(transitionInfo.get(0)),
                           null,
                                         Integer.parseInt(transitionInfo.get(1)),
                               true));
+        //it is a normal transition
       } else if(transitionInfo.size() == 3){
         transitions.add(new Transition(Integer.parseInt(transitionInfo.get(0)),
                                         transitionInfo.get(1),

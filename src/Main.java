@@ -26,7 +26,7 @@ public class Main {
     AutomataParser parser = new AutomataParser(fileContent);
     boolean shouldReturn = false;
     do{
-      //create automata
+      //create automaton
       Automaton automaton = parser.createAutomaton();
       //System.out.println(automaton.toString());
       System.out.println("Please enter a word to check if it's accepted from the automaton!");
